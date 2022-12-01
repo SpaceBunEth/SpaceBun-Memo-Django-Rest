@@ -15,11 +15,11 @@ Atts need to be added to model field types.
 
 """
 class Post():
-    created = models.DateTimeField()
-    updated = models.DateTimeField()
-    status = models.CharField()
-    like = models.IntegerField()
-    dislike = models.IntegerField()
+    created = models.DateTimeField(auto_now=True)
+    # updated = models.DateTimeField(auto_now_add=True)
+    # status = models.CharField()
+    # like = models.IntegerField()
+    # dislike = models.IntegerField()
 
 
 class Topic():
