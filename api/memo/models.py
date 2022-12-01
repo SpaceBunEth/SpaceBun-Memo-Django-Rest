@@ -9,14 +9,24 @@ class CustomUser(AbstractUser):
 
     def __str__(self):
         return f"{self.first_name} {self.last_name} - {self.email}"
+"""  
 
+Atts need to be added to model field types.
+
+"""
 class Post():
-    
-    pass
+    created = models.DateTimeField()
+    updated = models.DateTimeField()
+    status = models.CharField()
+    like = models.IntegerField()
+    dislike = models.IntegerField()
+
 
 class Topic():
-    pass
+    categories = models.CharField()
+
 
 class Permission():
-    pass
+    role = models.CharField()
+
 
