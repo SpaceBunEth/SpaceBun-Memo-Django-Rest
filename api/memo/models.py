@@ -15,13 +15,15 @@ Atts need to be added to model field types.
 
 """
 class Post(models.Model):
-    created = models.DateTimeField(auto_now=True)
-    # updated = models.DateTimeField(auto_now_add=True)
-    # status = models.CharField()
-    # like = models.IntegerField()
-    # dislike = models.IntegerField()
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+    body = models.CharField(max_length=255, null=True)
+    status = models.CharField(max_length=255, null=True)
+    like = models.IntegerField(null=True)
+    dislike = models.IntegerField(null=True)
+    topic = models.OneToOneField('Topic', on_delete=models.CASCADE, primary_key=True, default=1) # One Topic id/category to One Post
     def __str__(self):
-        return f"{self.created}"
+        return f"{self.body}"
 
 class Topic(models.Model):
     categories = models.CharField(max_length=20)
@@ -33,3 +35,10 @@ class Permission(models.Model):
     def __str__(self):
         return f"{self.role}"
 
+class Post_UserReact(models.Model):
+    user = models.ForeignKey('CustomUser', on_delete=models.CASCADE) # ManyToOne relationship using Foreign Key
+    post_info = models.ForeignKey('Post', on_delete=models.CASCADE)
+    # topic_type = models.OneToOneField('Topic', on_delete=models.CASCADE, primary_key=True,)
+    liked = models.BooleanField()
+    disliked = models.BooleanField()
+    # comment = models.CharField(max_length=200)

@@ -12,4 +12,6 @@ urlpatterns = [
     path('users/<int:pk>/', UserDetail.as_view(), name="get_user_details"),
     path('user/login/', jwt_views.TokenObtainPairView.as_view(), name='token_create'),
     path('token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
+
+    path('posts/', PostList.as_view(), name="get_post_list"),
 ]

@@ -6,8 +6,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.decorators import action
 
-from .models import CustomUser
-from .serializers import CustomUserSerializer
+from .models import CustomUser, Post
+from .serializers import CustomUserSerializer, PostSerializer
 
 class UserCreate(APIView):
     permission_classes = (permissions.AllowAny,)
@@ -26,3 +26,20 @@ class UserDetail(generics.RetrieveAPIView):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
     queryset = CustomUser.objects.all()
     serializer_class = CustomUserSerializer
+
+class PostList(APIView):
+    permission_classes = (permissions.AllowAny) # edit permissions to me users only later
+    authentication_classes = ()
+
+    def get(self, request, format=None):
+        posts = Post.objects.all()
+        serializer = PostSerializer(posts, many=True)
+        return Response(serializer.data)
+
+    def post(self, request, format='json'):
+        serializer = PostSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
