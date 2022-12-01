@@ -11,8 +11,8 @@ class CustomUserSerializer(serializers.ModelSerializer):
     username = serializers.CharField(min_length=4, max_length=15,required=True)
     password = serializers.CharField(min_length=8, write_only=True)
 
-    display = serializer.CharField(max_length=15, required=True)
-    bio = serializer.CharField(max_length=200)
+    display = serializers.CharField(max_length=15, required=True)
+    bio = serializers.CharField(max_length=200)
     
     class Meta:
         model = CustomUser

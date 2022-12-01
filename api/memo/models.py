@@ -14,19 +14,22 @@ class CustomUser(AbstractUser):
 Atts need to be added to model field types.
 
 """
-class Post():
+class Post(models.Model):
     created = models.DateTimeField(auto_now=True)
     # updated = models.DateTimeField(auto_now_add=True)
     # status = models.CharField()
     # like = models.IntegerField()
     # dislike = models.IntegerField()
+    def __str__(self):
+        return f"{self.created}"
 
+class Topic(models.Model):
+    categories = models.CharField(max_length=20)
+    def __str__(self):
+        return f"{self.categories}"
 
-class Topic():
-    categories = models.CharField()
-
-
-class Permission():
-    role = models.CharField()
-
+class Permission(models.Model):
+    role = models.CharField(max_length=20)
+    def __str__(self):
+        return f"{self.role}"
 
