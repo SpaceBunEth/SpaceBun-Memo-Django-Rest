@@ -4,10 +4,12 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework import status, permissions, generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.viewsets import ModelViewSet
 from rest_framework.decorators import action
+from rest_framework.permissions import BasePermission, IsAuthenticated, SAFE_METHODS
 
-from .models import CustomUser, Post
-from .serializers import CustomUserSerializer, PostSerializer
+from .models import CustomUser, Post, Topic
+from .serializers import CustomUserSerializer, PostSerializer, TopicSerializer
 
 class UserCreate(APIView):
     permission_classes = (permissions.AllowAny,)
@@ -42,4 +44,12 @@ class PostList(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+#User can get a list of topics from postgres DB
+class TopicList(ModelViewSet):
+    queryset = Topic.objects.all()
+    serializer_class = TopicSerializer
+    permission_classes = [IsAuthenticated]
+    http_method_names = ['get','post']
+
 

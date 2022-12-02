@@ -1,7 +1,7 @@
 
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework import serializers
-from .models import CustomUser, Post, Topic, Permission
+from .models import CustomUser, Post, Topic, Permission, User_Permissions, Post_UserReact, UserRelationship
 
 
 class CustomUserSerializer(serializers.ModelSerializer):
@@ -36,3 +36,13 @@ class PostSerializer(serializers.ModelSerializer):
         instance = self.Meta.model()
         instance.save()
         return instance
+
+# TopicSerializer is working 
+class TopicSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Topic
+        fields = ('categories',)
+
+
+    
