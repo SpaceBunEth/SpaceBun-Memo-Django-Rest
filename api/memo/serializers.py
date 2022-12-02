@@ -1,7 +1,7 @@
 
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework import serializers
-from .models import CustomUser, Post
+from .models import CustomUser, Post, Topic, Permission
 
 
 class CustomUserSerializer(serializers.ModelSerializer):
