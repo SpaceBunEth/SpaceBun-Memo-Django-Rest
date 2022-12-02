@@ -29,21 +29,27 @@ class UserDetail(generics.RetrieveAPIView):
     queryset = CustomUser.objects.all()
     serializer_class = CustomUserSerializer
 
-class PostList(APIView):
-    permission_classes = (permissions.AllowAny) # edit permissions to me users only later
-    authentication_classes = ()
+# class PostList(APIView):
+#     permission_classes = (permissions.AllowAny) # edit permissions to me users only later
+#     authentication_classes = ()
 
-    def get(self, request, format=None):
-        posts = Post.objects.all()
-        serializer = PostSerializer(posts, many=True)
-        return Response(serializer.data)
+#     def get(self, request, format=None):
+#         posts = Post.objects.all()
+#         serializer = PostSerializer(posts, many=True)
+#         return Response(serializer.data)
 
-    def post(self, request, format='json'):
-        serializer = PostSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+#     def post(self, request, format='json'):
+#         serializer = PostSerializer(data=request.data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data, status=status.HTTP_201_CREATED)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class PostList(ModelViewSet):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+    permission_classes = [IsAuthenticated]
+
 
 #User can get a list of topics from postgres DB
 class TopicList(ModelViewSet):

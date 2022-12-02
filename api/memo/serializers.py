@@ -30,7 +30,7 @@ class CustomUserSerializer(serializers.ModelSerializer):
 class PostSerializer(serializers.ModelSerializer): 
     class Meta:
         model = Post
-        fields = ('body', )
+        fields = ('__all__')
 
     def create(self):
         instance = self.Meta.model()

@@ -8,9 +8,10 @@ class CustomUser(AbstractUser):
 
 
     def __str__(self):
-        return f"{self.first_name} {self.last_name} - {self.email}"
+        return f"{self.username} {self.display} {self.email}"
 
 class Post(models.Model):
+    author = models.ForeignKey(CustomUser, on_delete=models.CASCADE,null=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     body = models.CharField(max_length=255, null=True)
@@ -18,9 +19,9 @@ class Post(models.Model):
     like = models.IntegerField(null=True)
     dislike = models.IntegerField(null=True)
     topic = models.OneToOneField('Topic', on_delete=models.CASCADE, primary_key=True, default=1) # One Topic id/category to One Post
-    response_to = models.ForeignKey('self', on_delete=models.CASCADE, null=True) #recursive relationship, for creating comments
+    response_to = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True) #recursive relationship, for creating comments
     def __str__(self):
-        return f"{self.topic} {self.body} {self.status} {self.created}"
+        return f"{self.topic} {self.author}"
 
 class Topic(models.Model):
     categories = models.CharField(max_length=20)
