@@ -32,10 +32,8 @@ class PostSerializer(serializers.ModelSerializer):
         model = Post
         fields = ('__all__')
 
-    def create(self):
-        instance = self.Meta.model()
-        instance.save()
-        return instance
+    def create(self,validated_data):
+        return Post.objects.create(**validated_data)
 
 # TopicSerializer is working 
 class TopicSerializer(serializers.ModelSerializer):

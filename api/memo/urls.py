@@ -24,5 +24,6 @@ urlpatterns = [
     #Posts that are not comments
     #?response_to__isnull=True
     path('timeline/',FilterPosts.as_view(), name="timeline_posts"),
-    path('username/',FilterUserName.as_view(), name="filter_by_username")
+    path('username/',FilterUserName.as_view(), name="filter_by_username"),
+    path('createpost/',CreatePost.as_view(), name="create_posts")
 ]

@@ -32,6 +32,11 @@ class UserDetail(generics.RetrieveAPIView):
     queryset = CustomUser.objects.all()
     serializer_class = CustomUserSerializer
 
+class CreatePost(generics.CreateAPIView):
+    permission_classes = (permissions.AllowAny,)
+    serializer_class = PostSerializer
+    queryset = Post.objects.all()
+
 # A view list of all posts that are not in responses to any other post AKA a comment
 # FilterPosts class allows for filtering of Posts based on response_to column data
 # To filter Main Posts ?response_to__isnull=True
