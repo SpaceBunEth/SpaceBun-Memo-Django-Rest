@@ -48,5 +48,14 @@ class UserRelationshipSerializer(serializers.ModelSerializer):
         model = UserRelationship
         fields = ("__all__")
 
+# Testing nested json, username to show in posts instead of [fk] CustomUser id
+class UserPostSerializer(serializers.ModelSerializer):
+    author = CustomUserSerializer()
+    topic = TopicSerializer()
+
+    class Meta:
+        model = Post
+        fields = ('id','created','body','like','dislike','author','topic','response_to')
+
 
     

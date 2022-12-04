@@ -12,7 +12,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 
 from .models import CustomUser, Post, Topic, UserRelationship
 
-from .serializers import CustomUserSerializer, PostSerializer, TopicSerializer, UserRelationshipSerializer
+from .serializers import CustomUserSerializer, PostSerializer, TopicSerializer, UserRelationshipSerializer, UserPostSerializer, UserPostSerializer
 
 class UserCreate(APIView):
     permission_classes = (permissions.AllowAny,)
@@ -32,6 +32,7 @@ class UserDetail(generics.RetrieveAPIView):
     queryset = CustomUser.objects.all()
     serializer_class = CustomUserSerializer
 
+# User can create a Post
 class CreatePost(generics.CreateAPIView):
     permission_classes = (permissions.AllowAny,)
     serializer_class = PostSerializer
@@ -57,6 +58,21 @@ class FilterUserName(generics.ListAPIView):
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['username']
 
+class FilterUserPosts(generics.ListAPIView):
+    permission_classes = (permissions.AllowAny,)
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['author']
+
+
+# Nested json get post with username test
+class UserPost(generics.ListAPIView):
+    permission_classes = (permissions.AllowAny,)
+    queryset = Post.objects.all()
+    serializer_class = UserPostSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['author']
 
 
 

@@ -25,5 +25,7 @@ urlpatterns = [
     #?response_to__isnull=True
     path('timeline/',FilterPosts.as_view(), name="timeline_posts"),
     path('username/',FilterUserName.as_view(), name="filter_by_username"),
-    path('createpost/',CreatePost.as_view(), name="create_posts")
+    path('createpost/',CreatePost.as_view(), name="create_posts"),
+    #path('userposts/',FilterUserPosts.as_view(), name="filter_posts_by_username")
+    path('userposts/',UserPost.as_view(), name="filter_posts_by_username")
 ]
