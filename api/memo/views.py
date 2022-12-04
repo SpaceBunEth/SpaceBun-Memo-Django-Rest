@@ -8,8 +8,11 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.decorators import action
 from rest_framework.permissions import BasePermission, IsAuthenticated, SAFE_METHODS
 
-from .models import CustomUser, Post, Topic
-from .serializers import CustomUserSerializer, PostSerializer, TopicSerializer
+from django_filters.rest_framework import DjangoFilterBackend
+
+from .models import CustomUser, Post, Topic, UserRelationship
+
+from .serializers import CustomUserSerializer, PostSerializer, TopicSerializer, UserRelationshipSerializer
 
 class UserCreate(APIView):
     permission_classes = (permissions.AllowAny,)
@@ -29,26 +32,30 @@ class UserDetail(generics.RetrieveAPIView):
     queryset = CustomUser.objects.all()
     serializer_class = CustomUserSerializer
 
-# class PostList(APIView):
-#     permission_classes = (permissions.AllowAny) # edit permissions to me users only later
-#     authentication_classes = ()
+# A view list of all posts that are not in responses to any other post AKA a comment
+class MainPosts(generics.ListAPIView):
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = {'response_to':['exact', 'isnull']}
 
-#     def get(self, request, format=None):
-#         posts = Post.objects.all()
-#         serializer = PostSerializer(posts, many=True)
-#         return Response(serializer.data)
 
-#     def post(self, request, format='json'):
-#         serializer = PostSerializer(data=request.data)
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response(serializer.data, status=status.HTTP_201_CREATED)
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+class UserList(ModelViewSet):
+    queryset = CustomUser.objects.all()
+    serializer_class = CustomUserSerializer
+    permission_classes = [IsAuthenticated]
+    http_method_names = ['get']
+
+class RelationshipList(ModelViewSet):
+    queryset = UserRelationship.objects.all()
+    serializer_class = UserRelationshipSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
 class PostList(ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
 
 #User can get a list of topics from postgres DB
@@ -57,5 +64,9 @@ class TopicList(ModelViewSet):
     serializer_class = TopicSerializer
     permission_classes = [IsAuthenticated]
     http_method_names = ['get','post']
+
+    @classmethod
+    def get_as_view(cls):
+        return cls.as_view({'get': 'list','post':'create'}) # as_views CRUD functions moved from ulrs to views example
 
 

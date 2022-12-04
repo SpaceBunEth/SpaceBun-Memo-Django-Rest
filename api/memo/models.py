@@ -18,7 +18,7 @@ class Post(models.Model):
     status = models.CharField(max_length=255, null=True)
     like = models.IntegerField(null=True)
     dislike = models.IntegerField(null=True)
-    topic = models.OneToOneField('Topic', on_delete=models.CASCADE, primary_key=True, default=1) # One Topic id/category to One Post
+    topic = models.OneToOneField('Topic', on_delete=models.CASCADE, default=1) # One Topic id/category to One Post
     response_to = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True) #recursive relationship, for creating comments
     def __str__(self):
         return f"{self.topic} {self.author}"
