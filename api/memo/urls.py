@@ -22,5 +22,6 @@ urlpatterns = [
     path('relationship/list/', RelationshipList.as_view({'get':'list','post':'create'}), name="user_relationship_list"),
 
     #Posts that are not comments
-    path('timeline?response_to__isnull=True',MainPosts.as_view(), name="timeline_posts"),
+    #?response_to__isnull=True
+    path('timeline/',MainPosts.as_view(), name="timeline_posts"),
 ]

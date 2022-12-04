@@ -5,12 +5,16 @@ from .models import CustomUser, Post, Topic, Permission, User_Permissions, Post_
 
 class CustomUserAdmin(UserAdmin):    
     model = CustomUser
-    list_display = ['email']
+    list_display = ['id','username']
+
+class PostAdmin(admin.ModelAdmin):
+    model = Post
+    list_display = ['id','topic','author', 'body']
 
 
 admin.site.register(CustomUser, CustomUserAdmin)
 admin.site.register(Topic)
-admin.site.register(Post)
+admin.site.register(Post, PostAdmin)
 admin.site.register(Permission)
 admin.site.register(User_Permissions)
 admin.site.register(Post_UserReact)
