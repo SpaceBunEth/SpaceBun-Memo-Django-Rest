@@ -33,12 +33,26 @@ class UserDetail(generics.RetrieveAPIView):
     serializer_class = CustomUserSerializer
 
 # A view list of all posts that are not in responses to any other post AKA a comment
-class MainPosts(generics.ListAPIView):
+# FilterPosts class allows for filtering of Posts based on response_to column data
+# To filter Main Posts ?response_to__isnull=True
+
+# To filter Comments of a Post ?response_to=*id of post
+class FilterPosts(generics.ListAPIView):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
     queryset = Post.objects.all()
     serializer_class = PostSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_fields = {'response_to':['exact', 'isnull']}
+
+# ?username=admin
+class FilterUserName(generics.ListAPIView):
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    queryset = CustomUser.objects.all()
+    serializer_class = CustomUserSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['username']
+
+
 
 
 class UserList(ModelViewSet):

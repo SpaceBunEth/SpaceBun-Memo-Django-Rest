@@ -15,10 +15,10 @@ class Post(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     body = models.CharField(max_length=255, null=True)
-    status = models.CharField(max_length=255, null=True)
-    like = models.IntegerField(null=True)
-    dislike = models.IntegerField(null=True)
-    topic = models.ForeignKey('Topic', on_delete=models.CASCADE, default=1) # One Topic id/category to One Post
+    status = models.CharField(max_length=255, null=True, blank=True)
+    like = models.IntegerField(null=True, default=0)
+    dislike = models.IntegerField(null=True, default=0)
+    topic = models.ForeignKey('Topic', on_delete=models.CASCADE, null=True, blank=True) # One Topic id/category to One Post
     response_to = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True) #recursive relationship, for creating comments
     def __str__(self):
         return f"{self.topic} {self.author}"

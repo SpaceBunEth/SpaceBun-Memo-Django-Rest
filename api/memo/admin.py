@@ -11,6 +11,10 @@ class PostAdmin(admin.ModelAdmin):
     model = Post
     list_display = ['id','topic','author', 'body']
 
+class RelationAdmin(admin.ModelAdmin):
+    model = UserRelationship
+    list_display = ['id','follower','following']
+
 
 admin.site.register(CustomUser, CustomUserAdmin)
 admin.site.register(Topic)
@@ -18,4 +22,4 @@ admin.site.register(Post, PostAdmin)
 admin.site.register(Permission)
 admin.site.register(User_Permissions)
 admin.site.register(Post_UserReact)
-admin.site.register(UserRelationship)
+admin.site.register(UserRelationship, RelationAdmin)
