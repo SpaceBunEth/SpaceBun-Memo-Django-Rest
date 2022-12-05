@@ -57,5 +57,13 @@ class UserPostSerializer(serializers.ModelSerializer):
         model = Post
         fields = ('id','created','body','like','dislike','author','topic','response_to')
 
+class UserFollowerSerializer(serializers.ModelSerializer):
+    follower_id = CustomUserSerializer()
+    following = CustomUserSerializer()
+
+    class Meta:
+        model = UserRelationship
+        fields = ['follower_id']
+
 
     

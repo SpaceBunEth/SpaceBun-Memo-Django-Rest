@@ -12,7 +12,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 
 from .models import CustomUser, Post, Topic, UserRelationship
 
-from .serializers import CustomUserSerializer, PostSerializer, TopicSerializer, UserRelationshipSerializer, UserPostSerializer, UserPostSerializer
+from .serializers import CustomUserSerializer, PostSerializer, TopicSerializer, UserRelationshipSerializer, UserPostSerializer, UserPostSerializer, UserFollowerSerializer
 
 class UserCreate(APIView):
     permission_classes = (permissions.AllowAny,)
@@ -58,6 +58,15 @@ class FilterUserName(generics.ListAPIView):
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['username']
 
+class FilterFollower(generics.ListAPIView):
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    queryset = UserRelationship.objects.all()
+    serializer_class = UserRelationshipSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['follower']
+
+
+# Not currently used replaced with UserPost
 class FilterUserPosts(generics.ListAPIView):
     permission_classes = (permissions.AllowAny,)
     queryset = Post.objects.all()
