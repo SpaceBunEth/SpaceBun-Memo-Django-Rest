@@ -28,9 +28,11 @@ class UserCreate(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class UserDetail(generics.RetrieveAPIView):
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    permission_classes = (permissions.AllowAny,)
     queryset = CustomUser.objects.all()
     serializer_class = CustomUserSerializer
+
+
 
 # User can create a Post
 class CreatePost(generics.CreateAPIView):
@@ -58,12 +60,21 @@ class FilterUserName(generics.ListAPIView):
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['username']
 
+# Filter a list of Who a user is following 
 class FilterFollower(generics.ListAPIView):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
     queryset = UserRelationship.objects.all()
-    serializer_class = UserRelationshipSerializer
+    serializer_class = UserFollowerSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['follower']
+
+# Filter by who is following one user, search that user by id 
+class FilterFollowing(generics.ListAPIView):
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    queryset = UserRelationship.objects.all()
+    serializer_class = UserFollowerSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['following']
 
 
 # Not currently used replaced with UserPost

@@ -10,6 +10,8 @@ urlpatterns = [
     path('', include(router.urls)),
     path('user/signup/', UserCreate.as_view(), name="create_user"),
     path('users/<int:pk>/', UserDetail.as_view(), name="get_user_details"),
+
+    
     path('users/list/', UserList.as_view({'get': 'list'}), name="user_list"),
 
     path('user/login/', jwt_views.TokenObtainPairView.as_view(), name='token_create'),
@@ -30,6 +32,7 @@ urlpatterns = [
     path('userposts/',UserPost.as_view(), name="filter_posts_by_username"),
 
     #user's list of followers
-    path('userfollower/', FilterFollower.as_view(), name="user_follower_list")
+    path('follower/', FilterFollower.as_view(), name="user_follower_list"),
     #user's list of following
+    path('following/', FilterFollowing.as_view(), name="user_follower_list")
 ]
