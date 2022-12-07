@@ -27,6 +27,15 @@ class CustomUserSerializer(serializers.ModelSerializer):
         instance.save()
         return instance
 
+
+class UserUpdateSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(min_length=8, required=False)
+    username = serializers.CharField(min_length=4, max_length=15,required=False)
+    class Meta:
+        model = CustomUser
+        fields = ('__all__')
+    
+
 class PostSerializer(serializers.ModelSerializer): 
     class Meta:
         model = Post
@@ -47,6 +56,8 @@ class UserRelationshipSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserRelationship
         fields = ("__all__")
+        
+
 
 # Testing nested json, username to show in posts instead of [fk] CustomUser id
 class UserPostSerializer(serializers.ModelSerializer):

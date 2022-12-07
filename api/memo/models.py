@@ -55,3 +55,7 @@ class Post_UserReact(models.Model):
 class UserRelationship(models.Model):
     follower = models.ForeignKey('CustomUser', on_delete=models.CASCADE, related_name='user_follower')
     following = models.ForeignKey('CustomUser', on_delete=models.CASCADE, related_name='user_following')
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=["follower","following"], name='unique_follow')
+        ]

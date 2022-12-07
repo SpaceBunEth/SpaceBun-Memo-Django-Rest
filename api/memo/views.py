@@ -4,15 +4,17 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework import status, permissions, generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework import viewsets
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.decorators import action
 from rest_framework.permissions import BasePermission, IsAuthenticated, SAFE_METHODS
+from rest_framework import filters
 
 from django_filters.rest_framework import DjangoFilterBackend
 
 from .models import CustomUser, Post, Topic, UserRelationship
 
-from .serializers import CustomUserSerializer, PostSerializer, TopicSerializer, UserRelationshipSerializer, UserPostSerializer, UserPostSerializer, UserFollowerSerializer
+from .serializers import CustomUserSerializer, PostSerializer, TopicSerializer, UserRelationshipSerializer, UserPostSerializer, UserPostSerializer, UserFollowerSerializer, UserUpdateSerializer
 
 class UserCreate(APIView):
     permission_classes = (permissions.AllowAny,)
@@ -31,6 +33,13 @@ class UserDetail(generics.RetrieveAPIView):
     permission_classes = (permissions.AllowAny,)
     queryset = CustomUser.objects.all()
     serializer_class = CustomUserSerializer
+
+# Update a User's information only needing the ID
+class UserUpdate(ModelViewSet):
+    permission_classes = (permissions.AllowAny,)
+    queryset = CustomUser.objects.all()
+    serializer_class = UserUpdateSerializer
+    
 
 
 
@@ -59,6 +68,14 @@ class FilterUserName(generics.ListAPIView):
     serializer_class = CustomUserSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['username']
+
+class SearchUserName(generics.ListAPIView):
+    permission_classes = (permissions.AllowAny,)
+    queryset = CustomUser.objects.all()
+    serializer_class = CustomUserSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['username']
+
 
 # Filter a list of Who a user is following 
 class FilterFollower(generics.ListAPIView):
@@ -105,7 +122,7 @@ class UserList(ModelViewSet):
 class RelationshipList(ModelViewSet):
     queryset = UserRelationship.objects.all()
     serializer_class = UserRelationshipSerializer
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    permission_classes = (permissions.AllowAny,)
 
 class PostList(ModelViewSet):
     queryset = Post.objects.all()
@@ -117,7 +134,7 @@ class PostList(ModelViewSet):
 class TopicList(ModelViewSet):
     queryset = Topic.objects.all()
     serializer_class = TopicSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
     http_method_names = ['get','post']
 
     @classmethod
