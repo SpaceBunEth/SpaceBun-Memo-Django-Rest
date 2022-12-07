@@ -49,7 +49,7 @@ class TopicSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Topic
-        fields = ('categories',)
+        fields = ('id','categories',)
 
 class UserRelationshipSerializer(serializers.ModelSerializer):
 

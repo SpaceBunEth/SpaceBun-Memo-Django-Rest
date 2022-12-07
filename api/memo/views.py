@@ -56,7 +56,7 @@ class CreatePost(generics.CreateAPIView):
 # To filter Comments of a Post ?response_to=*id of post
 class FilterPosts(generics.ListAPIView):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
-    queryset = Post.objects.all()
+    queryset = Post.objects.order_by('-created')
     serializer_class = PostSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_fields = {'response_to':['exact', 'isnull']}
