@@ -34,6 +34,7 @@ class UserUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
         fields = ('__all__')
+
     
 
 class PostSerializer(serializers.ModelSerializer): 
