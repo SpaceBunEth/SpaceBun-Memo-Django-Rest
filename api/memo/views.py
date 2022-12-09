@@ -36,7 +36,7 @@ class UserDetail(generics.RetrieveAPIView):
 
 # Update a User's information only needing the ID
 class UserUpdate(ModelViewSet):
-    permission_classes = (permissions.AllowAny,)
+    permission_classes = [permissions.AllowAny]
     queryset = CustomUser.objects.all()
     serializer_class = UserUpdateSerializer
     
@@ -60,6 +60,16 @@ class FilterPosts(generics.ListAPIView):
     serializer_class = PostSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_fields = {'response_to':['exact', 'isnull']}
+
+    
+
+class FilterComments(generics.ListAPIView):
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    queryset = Post.objects.order_by('created')
+    serializer_class = PostSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = {'response_to':['exact', 'isnull']}
+
 
 # ?username=admin
 class FilterUserName(generics.ListAPIView):
@@ -103,7 +113,8 @@ class FilterUserPosts(generics.ListAPIView):
     filterset_fields = ['author']
 
 
-# Nested json get post with username test
+# Nested json get post with username test 
+#?author= Filter using User ID
 class UserPost(generics.ListAPIView):
     permission_classes = (permissions.AllowAny,)
     queryset = Post.objects.all()
@@ -116,7 +127,7 @@ class UserPost(generics.ListAPIView):
 class UserList(ModelViewSet):
     queryset = CustomUser.objects.all()
     serializer_class = CustomUserSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     http_method_names = ['get']
 
 class RelationshipList(ModelViewSet):
