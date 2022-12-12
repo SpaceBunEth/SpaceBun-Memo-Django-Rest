@@ -47,6 +47,7 @@ urlpatterns = [
 
     #path('userposts/',UserPosts.as_view(), name="filter_posts_by_user_id")
     path('userposts/',UserPost.as_view(), name="filter_posts_by_user_id"),
+    path('userpostsrecent/',UserPostRecent.as_view(), name="filter_posts_by_user_id"),
     
     
 

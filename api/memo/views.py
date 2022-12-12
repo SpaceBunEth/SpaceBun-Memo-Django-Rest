@@ -14,7 +14,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 
 from .models import CustomUser, Post, Topic, UserRelationship
 
-from .serializers import CustomUserSerializer, PostSerializer, TopicSerializer, UserRelationshipSerializer, UserPostSerializer, UserPostSerializer, UserFollowerSerializer, UserUpdateSerializer
+from .serializers import CustomUserSerializer, PostSerializer, TopicSerializer, UserRelationshipSerializer, UserPostSerializer, UserPostSerializer, UserFollowerSerializer, UserUpdateSerializer, GetPostSerializer
 
 class UserCreate(APIView):
     permission_classes = (permissions.AllowAny,)
@@ -57,16 +57,18 @@ class CreatePost(generics.CreateAPIView):
 class FilterPosts(generics.ListAPIView):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
     queryset = Post.objects.order_by('-created')
-    serializer_class = PostSerializer
+    serializer_class = GetPostSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_fields = {'response_to':['exact', 'isnull']}
+
+
 
     
 
 class FilterComments(generics.ListAPIView):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
     queryset = Post.objects.order_by('created')
-    serializer_class = PostSerializer
+    serializer_class = GetPostSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_fields = {'response_to':['exact', 'isnull']}
 
@@ -118,6 +120,13 @@ class FilterUserPosts(generics.ListAPIView):
 class UserPost(generics.ListAPIView):
     permission_classes = (permissions.AllowAny,)
     queryset = Post.objects.all()
+    serializer_class = UserPostSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['author']
+
+class UserPostRecent(generics.ListAPIView):
+    permission_classes = (permissions.AllowAny,)
+    queryset = Post.objects.order_by('-created')
     serializer_class = UserPostSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['author']

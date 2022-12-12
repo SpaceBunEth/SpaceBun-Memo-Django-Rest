@@ -54,14 +54,21 @@ class TopicSerializer(serializers.ModelSerializer):
 
 
 class PostSerializer(serializers.ModelSerializer): 
-    author = CustomUserSerializer()
-    topic = TopicSerializer()
     class Meta:
         model = Post
         fields = ('__all__')
 
     def create(self,validated_data):
         return Post.objects.create(**validated_data)
+
+# get a post with nested json for author CustomUser and topic
+class GetPostSerializer(serializers.ModelSerializer): 
+    author = CustomUserSerializer()
+    topic = TopicSerializer()
+    class Meta:
+        model = Post
+        fields = ('__all__')
+
 
 class UserRelationshipSerializer(serializers.ModelSerializer):
 
