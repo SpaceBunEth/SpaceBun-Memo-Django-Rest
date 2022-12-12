@@ -53,7 +53,7 @@ urlpatterns = [
 
     #user's list of followers
     path('follower/', FilterFollower.as_view(), name="user_follower_list"),
-    #user's list of following
+    #user's list of followings
     path('following/', FilterFollowing.as_view(), name="user_follower_list")
 
 
